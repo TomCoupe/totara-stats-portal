@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+
+require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/bootstrap/helpers.php';
+require __DIR__ . '/bootstrap/eloquent.php';
+
+use Illuminate\Console\Application as Artisan;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Database\Migrations\DatabaseMigrationRepository;
+use Illuminate\Database\Migrations\Migrator;
+use Illuminate\Database\Migrations\MigrationCreator;
+use Illuminate\Support\Composer;
+use Illuminate\Container\Container;
+
+$container = Container::getInstance();
+$db     = $container->make('db');
+$events = $container->make('events');
+$files  = new Filesystem();
+
+$repo = new DatabaseMigrationRepository($db, 'migrations');
+if (!$repo->repositoryExists()) {
+    $repo->createRepository();
+}
+$container->instance('migration.repository', $repo);
+
+$migrator = new Migrator($repo, $db, $files, $events);
+
+$app = new Artisan($container, $events, '1.0');
+$app->add(new Illuminate\Database\Console\Migrations\MigrateCommand($migrator, $events));
+$app->add(new Illuminate\Database\Console\Migrations\RollbackCommand($migrator));
+$app->add(new Illuminate\Database\Console\Migrations\ResetCommand($migrator));
+$app->add(new Illuminate\Database\Console\Migrations\StatusCommand($migrator));
+$app->add(new Illuminate\Database\Console\Migrations\RefreshCommand($migrator));
+
+$creator  = new MigrationCreator($files, __DIR__ . '/stubs');
+$composer = new Composer($files, __DIR__ . '/vendor');
+$app->add(new Illuminate\Database\Console\Migrations\MigrateMakeCommand($creator, $composer));
+
+$app->run();
