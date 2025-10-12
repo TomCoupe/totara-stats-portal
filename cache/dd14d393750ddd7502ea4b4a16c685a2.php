@@ -28,7 +28,7 @@
 </main>
 
 <footer>
-    <p>&copy; 2025 My Project. All rights reserved.</p>
+    <p>testing footer</p>
 </footer>
 
 <script src="script.js"></script>

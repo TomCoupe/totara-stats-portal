@@ -1,9 +1,9 @@
 <?php
 use DI\Container;
 use Slim\Factory\AppFactory;
+use App\Models\User;
 
 require __DIR__ . '/../vendor/autoload.php';
-
 $container = new Container();
 
 $settings = require __DIR__ . '/../app/settings.php';
