@@ -1,0 +1,15 @@
+{
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "^1.7",
+        "php-di/php-di": "^7.1",
+        "jenssegers/blade": "^2",
+        "illuminate/view": "^10",
+        "illuminate/events": "^10",
+        "illuminate/filesystem": "^10"
+    },
+    "require-dev": {
+        "spatie/ray": "^1.42"
+    },
+    "autoload"
+}
