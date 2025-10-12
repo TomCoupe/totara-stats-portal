@@ -1,13 +1,13 @@
 <?php
-
 use Slim\App;
+use Illuminate\Container\Container as Ioc;
 
 return function (App $app) {
-    $setting = $app->getContainer()->get('settings');
+    $settings = Ioc::getInstance()->get('settings'); // ← now exists
 
     $app->addErrorMiddleware(
-        $setting['displayErrorDetails'],
-        $setting['logErrors'],
-        $setting['logErrorDetails']
+        $settings['displayErrorDetails'] ?? false,
+        $settings['logError']            ?? true,
+        $settings['logErrorDetails']     ?? true
     );
 };

@@ -32,5 +32,9 @@
         "migrate": "./artisan migrate --path=database/migrations",
         "rollback": "./artisan migrate:rollback --path=database/migrations",
         "make:migration": "./artisan make:migration --path=database/migrations"
-    }
+    },
+    "files": [
+        "bootstrap/helpers.php",
+        "app/vite.php"
+    ]
 }

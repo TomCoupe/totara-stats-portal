@@ -1,9 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div style="padding:10px">
-        <p>
-            content
-        </p>
+    <div>
+        <projects-home id="projects-root" data-props='@json($projects)'></projects-home>
     </div>
 @endsection

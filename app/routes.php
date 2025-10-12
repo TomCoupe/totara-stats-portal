@@ -7,7 +7,16 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 return function (App $app) {
     $app->get('/home', function (Request $request, Response $response) {
-        return view($response, 'content.home');
+        $projects = [
+            'testing' => 3333
+        ];
+        return view(
+            $response,
+            'content.home',
+            [
+                'projects' => $projects
+            ]
+        );
     });
 
     $app->get('/', function(Request $request, Response $response, $params) {

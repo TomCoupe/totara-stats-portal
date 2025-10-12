@@ -1,27 +1,31 @@
 <?php
-use DI\Container;
+declare(strict_types=1);
+
 use Slim\Factory\AppFactory;
-use App\Models\User;
 use Dotenv\Dotenv;
 
 require __DIR__ . '/../vendor/autoload.php';
 
-// Load env vars
-$dotenv = Dotenv::createImmutable(dirname(__DIR__));
-$dotenv->safeLoad();
+Dotenv::createImmutable(dirname(__DIR__))->safeLoad();
 
-$container = new Container();
+// one, unified container
+$container = new \Bootstrap\AppContainer(dirname(__DIR__));
+\Illuminate\Container\Container::setInstance($container);
 
-$settings = require __DIR__ . '/../app/settings.php';
-$settings($container);
+// helpers + eloquent + vite helper
+require __DIR__ . '/helpers.php';
+require __DIR__ . '/../app/vite.php';
+require __DIR__ . '/eloquent.php';
 
+// ✅ load and apply settings here
+($settings = require __DIR__ . '/../app/settings.php')($container);
+
+// give Slim the same container
 AppFactory::setContainer($container);
 $app = AppFactory::create();
 
-$middleware = require __DIR__ . '/../app/middleware.php';
-$middleware($app);
-
-$routes = require __DIR__ . '/../app/routes.php';
-$routes($app);
+// now middleware & routes (they can read 'settings')
+(require __DIR__ . '/../app/middleware.php')($app);
+(require __DIR__ . '/../app/routes.php')($app);
 
 $app->run();

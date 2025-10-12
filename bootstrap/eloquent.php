@@ -9,6 +9,7 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Support\Facades\Facade;
 use Bootstrap\AppContainer;
+use Illuminate\Filesystem\Filesystem;
 
 Dotenv::createImmutable(dirname(__DIR__))->safeLoad();
 
@@ -65,3 +66,25 @@ $container->get('db')->setDefaultConnection($connectionName);
 Facade::setFacadeApplication($container);
 
 $container->instance('db.schema', $capsule->schema());
+
+$base = dirname(__DIR__);
+$viewsPath = $base.'/resources/views';
+$compiledPath = $base.'/cache';
+
+// merge with your existing config array (database.* etc.)
+$container->instance('config', new Config(array_merge(
+    $container->has('config') ? $container->get('config')->all() : [],
+    [
+        'view.paths'    => [$viewsPath],   // <-- must be an array
+        'view.compiled' => $compiledPath,  // where compiled blades go
+        'app.env'       => $_ENV['APP_ENV'] ?? 'production',
+    ]
+)));
+
+// bind filesystem (used by view finder)
+$container->singleton('files', fn() => new Filesystem());
+
+// make sure the compiled dir exists
+if (!is_dir($compiledPath)) {
+    @mkdir($compiledPath, 0777, true);
+}
