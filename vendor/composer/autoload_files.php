@@ -17,6 +17,7 @@ return array(
     '253c157292f75eb38082b5acb06f3f01' => $vendorDir . '/nikic/fast-route/src/functions.php',
     '7b11c4dc42b3b3023073cb14e519683c' => $vendorDir . '/ralouphie/getallheaders/src/getallheaders.php',
     'e39a8b23c42d4e1452234d762b03835a' => $vendorDir . '/ramsey/uuid/src/functions.php',
+    '320cde22f66dd4f5d3fd621d3e88b98f' => $vendorDir . '/symfony/polyfill-ctype/bootstrap.php',
     '667aeda72477189d0494fecd327c3641' => $vendorDir . '/symfony/var-dumper/Resources/functions/dump.php',
     'b33e3d135e5d9e47d845c576147bda89' => $vendorDir . '/php-di/php-di/src/functions.php',
     '3074abeef0bacf5811f59e9dee6311d1' => $vendorDir . '/spatie/ray/src/helpers.php',
