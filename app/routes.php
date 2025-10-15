@@ -1,15 +1,14 @@
 <?php
 
-use Slim\App;
-
+use App\Model\Project;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\App;
 
 return function (App $app) {
     $app->get('/home', function (Request $request, Response $response) {
-        $projects = [
-            'testing' => 3333
-        ];
+        $projects = Project::all();
+
         return view(
             $response,
             'content.home',

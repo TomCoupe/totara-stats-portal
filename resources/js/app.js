@@ -1,7 +1,6 @@
 import { createApp } from 'vue'
 import PrimeVue from 'primevue/config'
-import Aura from '@primevue/themes/aura'          // theme preset
-import 'primeicons/primeicons.css'               // icons
+import 'primeicons/primeicons.css'
 
 import ProjectsHome from '@/components/ProjectsHome.vue'
 
@@ -10,6 +9,6 @@ if (el) {
     const props = el.dataset.props ? JSON.parse(el.dataset.props) : {}
 
     const app = createApp(ProjectsHome, { projects: props })
-    app.use(PrimeVue, { theme: { preset: Aura } }) // activate theme
+    app.use(PrimeVue)
     app.mount(el)
 }
