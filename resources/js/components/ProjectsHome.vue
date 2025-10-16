@@ -63,19 +63,66 @@
           </template>
         </Card>
       </div>
-      <div class="flex justify-center py-10 flex-1 px-10 h-100">
-        <DataTable
-            :value="selectedProject.plugins"
-            :rows="20"
-            scrollable
-            scroll-height="400px"
-            striped-rows
-            class="flex justify-center"
+
+      <div class="grid grid-cols-2 gap-x-10">
+          <Card class="text-center py-5">
+            <template #title>Active Users in The Last 3 Months</template>
+            <template #content>
+              <p class="">
+                {{ selectedProject.active_users_three_months }}
+              </p>
+            </template>
+          </Card>
+          <Card class="text-center py-5">
+            <template #title>Active Users in The Last Year</template>
+            <template #content>
+              <p class="">
+                {{ selectedProject.active_users_one_year }}
+              </p>
+            </template>
+          </Card>
+      </div>
+      <div class="grid grid-cols-2 gap-x-10">
+        <Card
+            id="chart-card"
+            class="text-center p-5 grid grid-cols-1 my-5 h-96"
+            :pc="{
+              content: 'h-full',
+            }"
         >
-          <Column field="display_name" header="Name"></Column>
-          <Column field="version" header="Version"></Column>
-        </DataTable>
-        <Chart type="bar" :data="chartData" :options="options" class="w-100 h-auto flex justify-center flex-2"/>
+          <template #content>
+            <div class="w-full h-full">
+              <Chart
+                  type="bar"
+                  :data="chartData"
+                  :options="options"
+                  class="w-full h-full"
+              />
+            </div>
+          </template>
+        </Card>
+
+        <Card
+            id="chart-card"
+            class="text-center p-5 grid grid-cols-1 my-5 h-96"
+            :pc="{
+              content: 'h-full',
+            }"
+        >
+          <template #content>
+          <DataTable
+              :value="selectedProject.plugins"
+              :rows="20"
+              scrollable
+              scroll-height="300px"
+              striped-rows
+              class="flex justify-center"
+          >
+            <Column field="display_name" header="Name"></Column>
+            <Column field="version" header="Version"></Column>
+          </DataTable>
+          </template>
+        </Card>
       </div>
 
     </div>
@@ -104,6 +151,8 @@
       return {
         selectedProject: {},
         options: {
+          responsive: true,
+          maintainAspectRatio: false,
           plugins: {
             title: {
               display: true,
@@ -243,6 +292,12 @@
 
   .p-datatable-header-cell {
     padding: 10px !important;
+  }
+
+  #chart-card {
+    .p-card-content{
+      height: 100%;
+    }
   }
 
 </style>
