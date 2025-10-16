@@ -18,9 +18,6 @@
         <p class="uppercase tracking-wider text-2xl font-bold align-right pr-10 max-w-1/2">
           {{ selectedProject.name }}
         </p>
-        <p class="border-l border-gray-400 text-left pl-10 max-w-1/2">
-          {{ selectedProject.description }}
-        </p>
       </div>
       <div class="grid grid-cols-4 gap-x-10 m-10">
         <div class="flex flex-col gap-y-10 ">
@@ -66,12 +63,21 @@
           </template>
         </Card>
       </div>
-      <div class="flex justify-center py-10">
-        <DataTable :value="selectedProject.plugins" :rows="20" scrollable scroll-height="400px" striped-rows>
+      <div class="flex justify-center py-10 flex-1 px-10 h-100">
+        <DataTable
+            :value="selectedProject.plugins"
+            :rows="20"
+            scrollable
+            scroll-height="400px"
+            striped-rows
+            class="flex justify-center"
+        >
           <Column field="display_name" header="Name"></Column>
           <Column field="version" header="Version"></Column>
         </DataTable>
+        <Chart type="bar" :data="chartData" :options="options" class="w-100 h-auto flex justify-center flex-2"/>
       </div>
+
     </div>
   </div>
 </template>
@@ -81,6 +87,7 @@
   import Select from 'primevue/select';
   import DataTable from 'primevue/datatable';
   import Column from 'primevue/column';
+  import Chart from 'primevue/chart';
 
   export default {
     name: 'ProjectsHome',
@@ -89,12 +96,38 @@
       Card,
       Select,
       DataTable,
-      Column
+      Column,
+      Chart
     },
 
     data() {
       return {
         selectedProject: {},
+        options: {
+          plugins: {
+            title: {
+              display: true,
+              text: 'Course Completions over the last week',
+              font: {
+                size: 20,
+                weight: 'bold',
+                lineHeight: 1.2,
+              },
+            },
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grace: '10%',
+              ticks: {
+                stepSize: 1,
+              }
+            }
+          }
+        },
       }
     },
 
@@ -102,10 +135,78 @@
       projects: Object
     },
 
+    computed: {
+      formatChartData() {
+        if (!this.selectedProject) {
+          return;
+        }
+
+        const days = this.getLastWeekStrings();
+
+        let chartData = [];
+
+        let counter = 0;
+
+        for (let day of days) {
+          for (let completion of this.selectedProject.completions) {
+            if (completion['completion_date'] === day) {
+              counter++
+            }
+          }
+
+          chartData.push(counter);
+          counter = 0;
+        }
+
+        this.$forceUpdate();
+
+        return chartData;
+      },
+
+      chartData() {
+        return {
+          labels: this.getLastWeekStrings(),
+          datasets: [
+            {
+              fill: false,
+              data: this.formatChartData,
+              backgroundColor: [
+                'rgba(255, 99, 132, 0.4)',
+                'rgba(255, 159, 64, 0.4)',
+                'rgba(255, 205, 86, 0.4)',
+                'rgba(75, 192, 192, 0.4)',
+                'rgba(54, 162, 235, 0.4)',
+                'rgba(153, 102, 255, 0.4)',
+                'rgba(201, 203, 207, 0.4)'
+              ],
+              borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(255, 159, 64)',
+                'rgb(255, 205, 86)',
+                'rgb(75, 192, 192)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)',
+                'rgb(201, 203, 207)'
+              ],
+              borderWidth: 1
+            }
+          ]
+        }
+      }
+    },
+
     methods: {
       selectProject(project) {
         this.selectedProject = project;
-      }
+      },
+
+      getLastWeekStrings() {
+        return Array.from({ length: 7 }, (_, i) => {
+          const date = new Date();
+          date.setDate(date.getDate() - i);
+          return date.toISOString().split('T')[0];
+        }).reverse();
+      },
     }
   }
 </script>

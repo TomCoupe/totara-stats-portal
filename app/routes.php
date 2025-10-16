@@ -11,9 +11,11 @@ return function (App $app) {
         $projects = Project::all();
 
         foreach ($projects as $project) {
-            $plugins = DB::table('project_plugins')->where('project_id', $project->id)->get();
+            $plugins     = DB::table('project_plugins')->where('project_id', $project->id)->get();
+            $completions = DB::table('project_course_completions')->where('project_id', $project->id)->get();
 
-            $project->plugins = $plugins;
+            $project->plugins     = $plugins;
+            $project->completions = $completions;
         }
 
         return view(
