@@ -1,21 +1,21 @@
 <template>
   <div class="flex flex-col w-full">
-    <div class="bg-[#DC2F89] text-white py-15">
-      <p class="text-5xl font-bold tracking-wider text-center mb-10">BE Totara Network Portal</p>
-      <div class="flex justify-center">
-        <Select
-            :v-model="selectedProject"
-            :options="projects"
-            optionLabel="name"
-            placeholder="Select a Project"
-            class="md:w-min py-2 px-5"
-            @update:modelValue="selectProject($event)"
-        />
-      </div>
+    <div class="text-white py-5 px-5 w-full flex place-content-between">
+      <a href="/home">
+        <Image src="https://i0.wp.com/buildempire.co.uk/wp-content/uploads/2023/02/BE-Full-Colour-Logo.webp?w=600&ssl=1" alt="Image" width="100" />
+      </a>
+      <Select
+          :v-model="selectedProject"
+          :options="projects"
+          optionLabel="name"
+          placeholder="Select a Project"
+          class="md:w-min py-2 px-5 h-10"
+          @update:modelValue="selectProject($event)"
+      />
     </div>
-    <div v-if="selectedProject.name" >
-      <div class="w-5xl mx-auto border-1 border-gray-400 rounded-xl mt-15 p-5 flex align-center items-center justify-center">
-        <p class="uppercase tracking-wider text-2xl font-bold align-right pr-10 max-w-1/2">
+    <div v-if="selectedProject.name">
+      <div class="w-5xl mx-auto mt-5 p-5 flex align-center items-center justify-center">
+        <p class="uppercase tracking-wider text-2xl font-bold pr-10">
           {{ selectedProject.name }}
         </p>
       </div>
@@ -45,6 +45,11 @@
               {{ selectedProject.php_version }}
             </p>
           </template>
+          <template #footer>
+            <p v-if="maxPhpVersion > selectedProject.php_version" class="text-[#dc2f89]">
+              Needs updating to: <strong>{{ maxPhpVersion }}</strong>
+            </p>
+          </template>
         </Card>
         <Card class="text-center justify-center">
           <template #title>Totara Version</template>
@@ -53,12 +58,22 @@
               {{ selectedProject.totara_version }}
             </p>
           </template>
+          <template #footer>
+            <p v-if="maxTotaraVersion > selectedProject.totara_version" class="text-[#dc2f89]">
+              Needs updating to: <strong>{{ maxTotaraVersion }}</strong>
+            </p>
+          </template>
         </Card>
         <Card class="text-center justify-center">
           <template #title>MySQL Version</template>
           <template #content>
-            <p class="">
+            <p>
               {{ selectedProject.mysql_version }}
+            </p>
+          </template>
+          <template #footer>
+            <p v-if="maxMysqlVersion > selectedProject.mysql_version" class="text-[#dc2f89]">
+              Needs updating to: <strong>{{ maxMysqlVersion }}</strong>
             </p>
           </template>
         </Card>
@@ -87,6 +102,7 @@
   import Select from 'primevue/select';
   import DataTable from 'primevue/datatable';
   import Column from 'primevue/column';
+  import Image from 'primevue/image';
   import Chart from 'primevue/chart';
 
   export default {
@@ -97,6 +113,7 @@
       Select,
       DataTable,
       Column,
+      Image,
       Chart
     },
 
@@ -132,7 +149,10 @@
     },
 
     props: {
-      projects: Object
+      projects: Object,
+      maxTotaraVersion: String,
+      maxPhpVersion: String,
+      maxMysqlVersion: String,
     },
 
     computed: {
