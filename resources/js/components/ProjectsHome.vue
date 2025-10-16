@@ -252,7 +252,7 @@
 
       chartData() {
         return {
-          labels: this.getLastWeekStrings(),
+          labels: this.getDayNamesForLabels(),
           datasets: [
             {
               fill: false,
@@ -295,9 +295,24 @@
         }).reverse();
       },
 
+      getDayNamesForLabels() {
+        const days = this.getLastWeekStrings();
+
+        let formattedDays = []
+        for (let i = 0; i < days.length; i++) {
+
+          const date = new Date(days[i]);
+          const day = date.toLocaleDateString("en-US", { weekday: "long" });
+
+          formattedDays.push(day);
+        }
+
+        return formattedDays;
+      }
+
       formatDate(dateStr) {
         const date = new Date(dateStr);
-        return new Intl.DateTimeFormat("en-GB").format(date); // dd/MM/YYYY format
+        return new Intl.DateTimeFormat("en-GB").format(date);
       },
     }
   }
