@@ -24,7 +24,7 @@
           <Card class="text-center py-5">
             <template #title>Total Courses</template>
             <template #content>
-              <p class="">
+              <p class="text-[#dc2f89]">
                 {{ selectedProject.total_courses }}
               </p>
             </template>
@@ -32,7 +32,7 @@
           <Card class="text-center py-5">
             <template #title>Total Users</template>
             <template #content>
-              <p class="">
+              <p class="text-[#dc2f89]">
                 {{ selectedProject.total_users }}
               </p>
             </template>
@@ -83,7 +83,7 @@
           <Card class="text-center py-5">
             <template #title>Active Users in The Last 3 Months</template>
             <template #content>
-              <p class="">
+              <p class="text-[#dc2f89]">
                 {{ selectedProject.active_users_three_months }}
               </p>
             </template>
@@ -91,8 +91,8 @@
           <Card class="text-center py-5">
             <template #title>Active Users in The Last Year</template>
             <template #content>
-              <p class="">
-                {{ selectedProject.active_users_one_year }}
+              <p class="text-[#dc2f89]">
+              {{ selectedProject.active_users_one_year }}
               </p>
             </template>
           </Card>
