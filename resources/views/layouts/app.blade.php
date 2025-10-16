@@ -23,7 +23,6 @@
 {{-- DEV: Vite server | PROD: built assets (manifest) --}}
 @php $env = $_ENV['APP_ENV'] ?? 'production'; @endphp
 @if ($env === 'local')
-    {{-- escape the @ so Blade doesn’t parse it --}}
     <script type="module" src="http://localhost:5173/@@vite/client"></script>
     <script type="module" src="http://localhost:5173/resources/js/app.js"></script>
 @else

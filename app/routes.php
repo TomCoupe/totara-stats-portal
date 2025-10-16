@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 
 return function (App $app) {
-    $app->get('/home', function (Request $request, Response $response) {
+    $app->get('/', function (Request $request, Response $response) {
         $projects = Project::all();
 
         $maxTotaraVersion = "0";
@@ -44,11 +44,5 @@ return function (App $app) {
                 'maxMysqlVersion' => $maxMysqlVersion
             ]
         );
-    });
-
-    $app->get('/', function(Request $request, Response $response, $params) {
-        $response->getBody()->write('Hello World');
-
-        return $response;
     });
 };

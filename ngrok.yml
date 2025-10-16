@@ -1,0 +1,9 @@
+version: 2
+authtoken: 2DTjLAUX7CRgwvCVPEv1SvlriCG_qfezLoziLVyCL6sDgchc
+tunnels:
+  first:
+    proto: http
+    addr: http://localhost:9092
+  second:
+    proto: http
+    addr: http://localhost:5173

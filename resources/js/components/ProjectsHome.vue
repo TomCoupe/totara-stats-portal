@@ -15,7 +15,7 @@
     </div>
     <div v-if="selectedProject.name">
       <div class="w-5xl mx-auto mt-5 p-5 flex align-center items-center justify-center">
-        <p class="uppercase tracking-wider text-2xl font-bold pr-10">
+        <p class="uppercase tracking-wider text-2xl font-bold">
           {{ selectedProject.name }}
         </p>
       </div>
@@ -79,7 +79,7 @@
         </Card>
       </div>
 
-      <div class="grid grid-cols-2 gap-x-10">
+      <div class="grid grid-cols-2 gap-x-10 m-10">
           <Card class="text-center py-5">
             <template #title>Active Users in The Last 3 Months</template>
             <template #content>
@@ -240,13 +240,13 @@
               fill: false,
               data: this.formatChartData,
               backgroundColor: [
-                'rgba(255, 99, 132, 0.4)',
-                'rgba(255, 159, 64, 0.4)',
-                'rgba(255, 205, 86, 0.4)',
-                'rgba(75, 192, 192, 0.4)',
-                'rgba(54, 162, 235, 0.4)',
-                'rgba(153, 102, 255, 0.4)',
-                'rgba(201, 203, 207, 0.4)'
+                'rgba(255, 99, 132, 0.8)',
+                'rgba(255, 159, 64, 0.8)',
+                'rgba(255, 205, 86, 0.8)',
+                'rgba(75, 192, 192, 0.8)',
+                'rgba(54, 162, 235, 0.8)',
+                'rgba(153, 102, 255, 0.8)',
+                'rgba(201, 203, 207, 0.8)'
               ],
               borderColor: [
                 'rgb(255, 99, 132)',
