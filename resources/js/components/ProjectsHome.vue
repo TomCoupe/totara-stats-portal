@@ -1,7 +1,7 @@
 <template>
-  <div class="flex flex-col w-full">
+  <div class="flex flex-col w-full min-h-screen bg-fixed">
     <div class="text-white py-5 px-5 w-full flex place-content-between">
-      <a href="/home">
+      <a href="/">
         <Image src="https://i0.wp.com/buildempire.co.uk/wp-content/uploads/2023/02/BE-Full-Colour-Logo.webp?w=600&ssl=1" alt="Image" width="100" />
       </a>
       <Select
@@ -15,7 +15,7 @@
     </div>
     <div v-if="selectedProject.name">
       <div class="w-5xl mx-auto mt-5 p-5 flex align-center items-center justify-center">
-        <p class="uppercase tracking-wider text-2xl font-bold">
+        <p class="uppercase tracking-wider text-4xl font-bold">
           {{ selectedProject.name }}
         </p>
       </div>
@@ -78,8 +78,7 @@
           </template>
         </Card>
       </div>
-
-      <div class="grid grid-cols-2 gap-x-10 m-10">
+      <div class="grid grid-cols-2 gap-x-10 mx-10">
           <Card class="text-center py-5">
             <template #title>Active Users in The Last 3 Months</template>
             <template #content>
@@ -97,7 +96,7 @@
             </template>
           </Card>
       </div>
-      <div class="grid grid-cols-2 gap-x-10">
+      <div class="grid grid-cols-2 gap-x-10 mx-10 my-5">
         <Card
             id="chart-card"
             class="text-center p-5 grid grid-cols-1 my-5 h-96"
@@ -139,7 +138,26 @@
           </template>
         </Card>
       </div>
-
+    </div>
+    <div v-else>
+      <p class="w-full text-4xl tracking-wider font-bold text-center mb-10">All Platforms</p>
+      <div class="grid grid-cols-2 gap-10 mx-10">
+        <Card
+          v-for="project in projects"
+          :key="project.id"
+          class="text-center p-5 my-5"
+          :pc="{
+            content: '',
+          }"
+        >
+          <template #title>{{ project.name }}</template>
+          <template #content>
+            <p class="text-gray-400">
+              Last Update: {{ formatDate(project.updated_at) }}
+            </p>
+          </template>
+        </Card>
+      </div>
     </div>
   </div>
 </template>
@@ -275,6 +293,11 @@
           date.setDate(date.getDate() - i);
           return date.toISOString().split('T')[0];
         }).reverse();
+      },
+
+      formatDate(dateStr) {
+        const date = new Date(dateStr);
+        return new Intl.DateTimeFormat("en-GB").format(date); // dd/MM/YYYY format
       },
     }
   }
