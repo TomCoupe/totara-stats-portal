@@ -13,20 +13,12 @@ $requestInput = file_get_contents('php://input');
 
 $data = json_decode(trim($requestInput), true);
 
-ray($data);
-
-ray($_ENV);
-
-
-
 if ($data['api_key'] !== $_ENV['API_KEY']) {
-    ray('1');
     http_response_code(500);
     exit;
 }
 
 if ($data['project_key'] === '' || $data['project_key'] === null) {
-    ray('2');
     http_response_code(500);
     exit;
 }
@@ -49,8 +41,9 @@ $success = DB::table('projects')->updateOrInsert(
 );
 
 $formattedPlugins = [];
-
-$project = DB::table('projects')->where('name',  $data['project_key'])->first();
+$project          = DB::table('projects')
+    ->where('name',  $data['project_key'])
+    ->first();
 
 
 foreach($data['plugins'] as $pluginPrefix) {
@@ -69,8 +62,6 @@ foreach ($data['plugin_usage'] as $plugin) {
     $formattedPlugins[$plugin['name']]['amount_used'] = $plugin['amount'] ?? 0;
 }
 
-ray($formattedPlugins);
-
 foreach ($formattedPlugins as $plugin) {
     DB::table('project_plugins')->updateOrInsert(
         [
@@ -86,20 +77,23 @@ foreach ($formattedPlugins as $plugin) {
     );
 }
 
+// Remove old records of completion before saving
+DB::table('project_course_completions')
+    ->where('project_id', $project->id)
+    ->delete();
 
+foreach ($data['completions'] as $completion) {
+    $date          = (new DateTime())->setTimestamp($completion['time_completed']);
+    $formattedDate = $date->format('Y-m-d');
 
-
-// TODO handle saving uuu
-
-
-ray($success);
-
-if ($success) {
-    http_response_code(200);
-} else {
-    http_response_code(500);
+    DB::table('project_course_completions')->insert(
+        [
+            'project_id'      => $project->id,
+            'course'          => $completion['course'],
+            'completion_date' => $formattedDate
+        ]
+    );
 }
+
+http_response_code(200);
 exit;
-
-
-
