@@ -1,11 +1,6 @@
 import { createApp } from 'vue'
 import PrimeVue from 'primevue/config'
-// import Aura from '@primeuix/themes/aura';
-// import 'primeicons/primeicons.css'
-// import 'primevue/resources/themes/lara-light-blue/theme.css'  // or another theme
-// import 'primevue/resources/primevue.min.css'
 import Lara from '@primeuix/themes/lara';
-
 
 import ProjectsHome from '@/components/ProjectsHome.vue'
 
@@ -19,7 +14,7 @@ if (el) {
             preset: Lara,
             options: {
                 prefix: 'p',
-                darkModeSelector: false, // force light mode
+                darkModeSelector: false,
                 cssLayer: true
             },
             mode: 'light'

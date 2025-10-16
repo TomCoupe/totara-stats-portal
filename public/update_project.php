@@ -48,6 +48,26 @@ $success = DB::table('projects')->updateOrInsert(
     ]
 );
 
+$formattedPlugins = [];
+
+foreach($data['plugins'] as $pluginPrefix) {
+    foreach ($pluginPrefix as $plugin) {
+        $formattedPlugins[$plugin['name']] = [
+            'plugin_name' => $plugin['name'],
+            'display_name' => $plugin['display_name'],
+            'release' => $plugin['release'],
+            'version' => $plugin['version']
+        ]
+    }
+}
+
+foreach ($data['plugin_usage'] as $plugin) {
+    $formattedPlugins[$plugin['name']]['amount_used'] = $plugin['amount'];
+}
+
+// TODO handle saving uuu
+
+
 ray($success);
 
 if ($success) {
